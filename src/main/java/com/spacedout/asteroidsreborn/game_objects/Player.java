@@ -19,12 +19,11 @@ public class Player extends GameObject {
 
 	public Player(int x, int y, int width, int height, String imagePath, GraphicsContext gc) {
 		super(x, y, width, height, 0, imagePath, gc);
-		this.dx = dx;
-		this.dy = dy;
-		this.rotation = rotation;
-		this.centreX = centreX;
-		this.centreY = centreY;
-		this.depthFromPlayer = 0;
+
+		// following saves computing the x and y position of the image, since it is constant (canvas is temporary)
+		Canvas canvas = gc.getCanvas();
+		this.centreX = (int)canvas.getWidth()/2 - width/2;
+		this.centreY = (int)canvas.getHeight()/2 - height/2;
 	}
 
 	@Override
@@ -39,17 +38,17 @@ public class Player extends GameObject {
 	@Override
 	public void update() {
 
-		this.dx += 8;
-		this.dy += 4;
+//		this.dx += 8;
+//		this.dy += 4;
 
 		if (this.rotation < 360) {
-			this.rotation += 0.4;
+			this.rotation += 1;
 		} else {
 			this.rotation = 0;
 		}
-
-		this.x += this.dx;
-		this.y += this.dy;
+//
+//		this.x += this.dx;
+//		this.y += this.dy;
 	}
 
 }

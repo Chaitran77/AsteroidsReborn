@@ -10,8 +10,10 @@ public class backgroundStar extends GameObject {
 	protected Color colour;
 
 
-	public backgroundStar(int x, int y, int width, int height, int depthFromPlayer, GraphicsContext gc) {
-		super(x, y, width, height, depthFromPlayer, gc);
+	public backgroundStar(int x, int y, int depthFromPlayer, GraphicsContext gc) {
+		// max width = 20px, min = 1px
+		super(x, y, 20/depthFromPlayer, 20/depthFromPlayer, depthFromPlayer, gc);
+
 	}
 
 	@Override
