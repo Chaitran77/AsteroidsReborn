@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 // this is where all the backend stuff happens (where we control and store our game objects - asteroids, spaceships etc...)
 
@@ -56,6 +57,16 @@ public class AsteroidsRebornApplication extends Application {
 		stage.setTitle("Asteroids Reborn");
 		stage.setScene(scene);
 		stage.show();
+	}
+
+	public static int generateBiasedRandom(double bias, int lowerBound, int upperBound) {
+		Random random = new Random();
+		double biasNum = random.nextDouble();
+		if (biasNum < bias) {
+			return random.nextInt(lowerBound, upperBound/2);
+		} else {
+			return random.nextInt(upperBound/2, upperBound);
+		}
 	}
 
 	public static void main(String[] args) { launch(); }

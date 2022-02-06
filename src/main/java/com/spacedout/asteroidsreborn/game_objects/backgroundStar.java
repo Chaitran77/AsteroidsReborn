@@ -2,8 +2,8 @@ package com.spacedout.asteroidsreborn.game_objects;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.Bloom;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 
 public class backgroundStar extends GameObject {
 
@@ -11,19 +11,22 @@ public class backgroundStar extends GameObject {
 	protected Player player;
 	private final Canvas canvas;
 
-	public backgroundStar(int x, int y, int depthFromPlayer, Player player, GraphicsContext gc) {
+	public backgroundStar(int x, int y, int depthFromPlayer, Player player, GraphicsContext gc, Color colour) {
 		// max width = 10px, min = 1px
 		super(x, y, depthFromPlayer, depthFromPlayer, depthFromPlayer, gc);
 
 		this.player = player;
 		this.canvas = gc.getCanvas();
-
+		this.colour = colour;
 	}
 
 	@Override
 	public void draw() {
-		this.gc.setFill(Paint.valueOf("#FFF"));
+//		this.gc.save();
+//		this.gc.setEffect(new Bloom(1));
+		this.gc.setFill(this.colour);
 		this.gc.fillOval(this.x, this.y, this.width, this.height);
+//		this.gc.restore();
 	}
 
 	@Override

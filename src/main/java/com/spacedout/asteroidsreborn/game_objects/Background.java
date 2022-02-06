@@ -1,8 +1,10 @@
 package com.spacedout.asteroidsreborn.game_objects;
 
+import com.spacedout.asteroidsreborn.AsteroidsRebornApplication;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 import java.util.Random;
 
@@ -22,12 +24,16 @@ public class Background extends GameObject {
 		System.out.println(random.nextInt((int) canvas.getWidth()));
 
 		for (int i = 0; i < numberOfStars; i++) {
+
+			int depthFromPlayer = AsteroidsRebornApplication.generateBiasedRandom(0.65, 1, 10);
+
 			this.stars[i] = new backgroundStar(
 					random.nextInt((int) canvas.getWidth()),
 					random.nextInt((int) canvas.getHeight()),
-					random.nextInt(10),
+					depthFromPlayer,
 					player,
-					gc
+					gc,
+					this.generateStarColour(depthFromPlayer)
 			);
 		}
 	}
@@ -109,6 +115,21 @@ public class Background extends GameObject {
 		for (backgroundStar star : this.stars) {
 			star.update();
 		}
+
+	}
+
+	private Color generateStarColour(int depthFromPlayer) {
+
+//		Random random = new Random();
+//
+//		return new Color(
+//				random.nextDouble(0, (255/255d)),
+//				random.nextDouble(0, (50/255d)),
+//				random.nextDouble(0, 1),
+//				1
+//		);
+
+		return new Color(1, 1, 1, 1);
 
 	}
 }
