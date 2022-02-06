@@ -22,6 +22,8 @@ import java.util.Random;
 
 public class AsteroidsRebornApplication extends Application {
 
+	public static boolean debugging = true;
+
 
 	@Override
 	public void start(Stage stage) throws IOException {
@@ -50,6 +52,18 @@ public class AsteroidsRebornApplication extends Application {
 				for (GameObject object: gameObjects) {
 					object.draw();
 					object.update();
+				}
+				if (AsteroidsRebornApplication.debugging) {
+					// draw debug graphics
+					gc.setStroke(Paint.valueOf("#FFF"));
+
+					gc.moveTo(player.getCentreX(), player.getCentreY());
+					gc.lineTo(player.getCentreX()+(player.getDx()), player.getCentreY());
+					gc.stroke();
+
+					gc.moveTo(player.getCentreX(), player.getCentreY());
+					gc.lineTo(player.getCentreX(), player.getCentreY()+(player.getDy()));
+					gc.stroke();
 				}
 			}
 		}.start();

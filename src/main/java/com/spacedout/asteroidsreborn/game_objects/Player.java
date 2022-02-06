@@ -1,5 +1,6 @@
 package com.spacedout.asteroidsreborn.game_objects;
 
+import com.spacedout.asteroidsreborn.AsteroidsRebornApplication;
 import com.spacedout.asteroidsreborn.GameWindowController;
 import com.spacedout.asteroidsreborn.Mouse;
 import javafx.scene.canvas.Canvas;
@@ -46,8 +47,11 @@ public class Player extends GameObject {
 			this.gc.lineTo(this.centreX + 30, this.centreY + 60 + this.thrusterLength);
 			this.gc.lineTo(this.centreX + 40, this.centreY + 60);
 			this.gc.fill();
+
+
 		}
 		this.gc.restore();
+
 	}
 
 	@Override
@@ -58,9 +62,11 @@ public class Player extends GameObject {
 //			Must use centreX and centreY because it is relative to the screen and so is the mouse
 
 			// if the magnitude of the velocity (given by sqrt of the sum of x and y components squared) < max speed, increase both components
-			if ((Math.abs(this.dx) < 100) || (Math.abs(this.dy) < 100)) { // TODO: Max speed = 100
-				this.dx += (Math.signum(Mouse.getX()-this.centreX) * -2); // TODO: |Acceleration| = 2
-				this.dy += (Math.signum(Mouse.getY()-this.centreY) * -2);
+			if (Math.abs(this.dx) < 200) { // TODO: Max speed = 100
+				this.dx += (Math.signum(Mouse.getX() - this.centreX) * -4); // TODO: |Acceleration| = 2
+			}
+			if (Math.abs(this.dy) < 200) { // TODO: Max speed = 100
+				this.dy += (Math.signum(Mouse.getY() - this.centreY) * -4);
 			}
 
 			if (this.thrusterLength < 50) {
@@ -76,10 +82,10 @@ public class Player extends GameObject {
 
 		// try and get the x and y velocity components equal to 0 if not already
 		if (this.dx != 0) {
-			this.dx -= (Math.signum(this.dx)*0.01); // TODO: |deceleration| = 0.01
+			this.dx -= (Math.signum(this.dx)*0.001); // TODO: |deceleration| = 0.01
 		}
 		if (this.dy != 0) {
-			this.dy -= (Math.signum(this.dy)*0.01);
+			this.dy -= (Math.signum(this.dy)*0.001);
 		}
 
 
@@ -88,4 +94,19 @@ public class Player extends GameObject {
 //		this.y += this.dy;
 	}
 
+	public int getDx() {
+		return dx;
+	}
+
+	public int getDy() {
+		return dy;
+	}
+
+	public int getCentreX() {
+		return centreX;
+	}
+
+	public int getCentreY() {
+		return centreY;
+	}
 }
