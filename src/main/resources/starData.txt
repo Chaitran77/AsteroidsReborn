@@ -1,3 +1,5 @@
+http://www.isthe.com/chongo/tech/astro/HR-temp-mass-table-byhrclass.html#below
+
 Stellar
 Type	Mass
 Mstar/Msun	Luminosity

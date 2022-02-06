@@ -53,17 +53,15 @@ public class Player extends GameObject {
 	@Override
 	public void update() {
 
-
-
 		if (Mouse.isPrimaryButton()) {
 //			apply mouse acceleration (strength)/mouse gravity, 5 = acceleration strength
 //			Must use centreX and centreY because it is relative to the screen and so is the mouse
 
 			// if the magnitude of the velocity (given by sqrt of the sum of x and y components squared) < max speed, increase both components
-//			if (Math.sqrt(this.dx^2 + this.dy^2) < 100) { // TODO: Max speed = 100
+			if ((Math.abs(this.dx) < 100) || (Math.abs(this.dy) < 100)) { // TODO: Max speed = 100
 				this.dx += (Math.signum(Mouse.getX()-this.centreX) * -2); // TODO: |Acceleration| = 2
 				this.dy += (Math.signum(Mouse.getY()-this.centreY) * -2);
-//			}
+			}
 
 			if (this.thrusterLength < 50) {
 				this.thrusterLength += 1; // TODO: Rate of thruster length increase
