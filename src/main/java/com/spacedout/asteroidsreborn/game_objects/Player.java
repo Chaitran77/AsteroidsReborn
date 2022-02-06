@@ -4,6 +4,7 @@ import com.spacedout.asteroidsreborn.GameWindowController;
 import com.spacedout.asteroidsreborn.Mouse;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Paint;
 
 public class Player extends GameObject {
 	// player stays in middle of screen but moves through the universe
@@ -33,6 +34,16 @@ public class Player extends GameObject {
 		this.gc.save();
 		this.rotate(this.gc, this.rotation, this.gc.getCanvas().getWidth()/2, this.gc.getCanvas().getHeight()/2);
 		this.gc.drawImage(this.image, this.centreX, this.centreY, this.width, this.height);
+
+		if (Mouse.isPrimaryButton()) {
+			// draw the thruster
+			this.gc.setFill(Paint.valueOf("rgba(79, 181, 255, 0.9)"));
+			this.gc.beginPath();
+			this.gc.moveTo(this.centreX + 20, this.centreY + 60);
+			this.gc.lineTo(this.centreX + 30, this.centreY + 80);
+			this.gc.lineTo(this.centreX + 40, this.centreY + 60);
+			this.gc.fill();
+		}
 		this.gc.restore();
 	}
 
