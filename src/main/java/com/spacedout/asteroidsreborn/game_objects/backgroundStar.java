@@ -12,7 +12,7 @@ public class backgroundStar extends GameObject {
 	private final Canvas canvas;
 
 	public backgroundStar(int x, int y, int depthFromPlayer, Player player, GraphicsContext gc) {
-		// max width = 20px, min = 1px
+		// max width = 10px, min = 1px
 		super(x, y, depthFromPlayer, depthFromPlayer, depthFromPlayer, gc);
 
 		this.player = player;
@@ -29,8 +29,11 @@ public class backgroundStar extends GameObject {
 	@Override
 	public void update() {
 
-		this.x += this.player.dx;
-		this.y += this.player.dy;
+		// to make smaller (further away) stars move slower, multiply the dx and dy values of the player by (1/this.depthFromPlayer)/10 = 10/this.depthFromPlayer
+		// this.depthFromPlayer has max value of 10 (far) and min of 1 (close), so dx(10) = 10/(10) = 1 (slow), dx(1) = 10/(1) = 10 (fast)
+		// also divide the original dx and dy values by 5 so the closest stars don't seem too close.
+		this.x += (this.player.dx/4 * (this.depthFromPlayer/10));
+		this.y += (this.player.dy/4 * (this.depthFromPlayer/10));
 
 		if (this.x > this.canvas.getWidth()) {
 			this.x -= (this.canvas.getWidth()+10);

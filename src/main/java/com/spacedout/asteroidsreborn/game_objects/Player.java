@@ -17,6 +17,8 @@ public class Player extends GameObject {
 	protected int centreX;
 	protected int centreY;
 
+	protected double thrusterLength = 0; // max 100px
+
 
 	public Player(int x, int y, int width, int height, String imagePath, GraphicsContext gc) {
 		super(x, y, width, height, 0, imagePath, gc);
@@ -35,12 +37,12 @@ public class Player extends GameObject {
 		this.rotate(this.gc, this.rotation, this.gc.getCanvas().getWidth()/2, this.gc.getCanvas().getHeight()/2);
 		this.gc.drawImage(this.image, this.centreX, this.centreY, this.width, this.height);
 
-		if (Mouse.isPrimaryButton()) {
+		if (Mouse.isPrimaryButton() || (this.thrusterLength != 0)) {
 			// draw the thruster
 			this.gc.setFill(Paint.valueOf("rgba(79, 181, 255, 0.9)"));
 			this.gc.beginPath();
 			this.gc.moveTo(this.centreX + 20, this.centreY + 60);
-			this.gc.lineTo(this.centreX + 30, this.centreY + 80);
+			this.gc.lineTo(this.centreX + 30, this.centreY + 60 + this.thrusterLength);
 			this.gc.lineTo(this.centreX + 40, this.centreY + 60);
 			this.gc.fill();
 		}
@@ -57,17 +59,26 @@ public class Player extends GameObject {
 //			Must use centreX and centreY because it is relative to the screen and so is the mouse
 			this.dx += (Math.signum(Mouse.getX()-this.centreX) * -2);
 			this.dy += (Math.signum(Mouse.getY()-this.centreY) * -2);
+
+			if (this.thrusterLength < 50) {
+				this.thrusterLength += 1;
+			}
+
+		} else if (this.thrusterLength != 0) {
+			this.thrusterLength -= 2;
 		}
 
 		this.rotation = Math.toDegrees(Math.atan2((Mouse.getY() -this.centreY), (Mouse.getX() -this.centreX))) + 90;
 
 
 		if (this.dx != 0) {
-			this.dx -= (Math.signum(this.dx)*1);
+			this.dx -= (Math.signum(this.dx)*0.01);
 		}
 		if (this.dy != 0) {
-			this.dy -= (Math.signum(this.dy)*1);
+			this.dy -= (Math.signum(this.dy)*0.01);
 		}
+
+
 //      instead of applying to player (like following), apply to stars
 //		this.x += this.dx;
 //		this.y += this.dy;
