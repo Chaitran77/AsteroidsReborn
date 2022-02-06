@@ -10,12 +10,12 @@ public abstract class GameObject {
 	protected int y;
 	protected int width;
 	protected int height;
-	protected int depthFromPlayer;
+	protected double depthFromPlayer;
 	protected Image image;
 	protected GraphicsContext gc;
 
 
-	public GameObject(int x, int y, int width, int height, int depthFromPlayer, String imagePath, GraphicsContext gc) {
+	public GameObject(int x, int y, int width, int height, double depthFromPlayer, String imagePath, GraphicsContext gc) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -26,7 +26,7 @@ public abstract class GameObject {
 	}
 
 	// constructor for objects without external images
-	public GameObject(int x, int y, int width, int height, int depthFromPlayer, GraphicsContext gc) {
+	public GameObject(int x, int y, int width, int height, double depthFromPlayer, GraphicsContext gc) {
 		this.x = x;
 		this.y = y;
 		this.width = width;

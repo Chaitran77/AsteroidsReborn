@@ -9,7 +9,7 @@
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
    <children>
-      <Canvas fx:id="gameCanvas" height="700" width="1080" />
+      <Canvas fx:id="gameCanvas" height="720" width="1080" />
    </children>
 
     

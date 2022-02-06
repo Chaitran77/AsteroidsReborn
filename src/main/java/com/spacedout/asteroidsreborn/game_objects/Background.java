@@ -4,13 +4,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-import java.io.File;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 public class Background extends GameObject {
 	protected Player player;
@@ -25,12 +19,14 @@ public class Background extends GameObject {
 		Random random = new Random();
 
 		stars = new backgroundStar[numberOfStars];
+		System.out.println(random.nextInt((int) canvas.getWidth()));
 
 		for (int i = 0; i < numberOfStars; i++) {
 			this.stars[i] = new backgroundStar(
 					random.nextInt((int) canvas.getWidth()),
 					random.nextInt((int) canvas.getHeight()),
-					random.nextInt(),
+					random.nextInt(10),
+					player,
 					gc
 			);
 		}
@@ -101,11 +97,18 @@ public class Background extends GameObject {
 
 	@Override
 	public void draw() {
+		for (backgroundStar star : this.stars) {
+			star.draw();
+		}
 	}
 
 	@Override
 	public void update() {
 		// don't need to apply acceleration buffer here as it is already applied to the player
-//		this.x = this.player.x;
+
+		for (backgroundStar star : this.stars) {
+			star.update();
+		}
+
 	}
 }
