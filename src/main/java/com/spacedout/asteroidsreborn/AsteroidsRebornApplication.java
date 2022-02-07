@@ -22,7 +22,7 @@ import java.util.Random;
 
 public class AsteroidsRebornApplication extends Application {
 
-	public static boolean debugging = true;
+	public static boolean debugging = false;
 
 
 	@Override
@@ -38,7 +38,7 @@ public class AsteroidsRebornApplication extends Application {
 
 		Player player = new Player(0, 0, 60, 60, "file:spaceship.png", gc);
 
-		gameObjects.add(new Background(0, 0, 0, 0, gc, player, 30));
+		gameObjects.add(new Background(0, 0, 0, 0, gc, player, 70));
 		gameObjects.add(player);
 
 		Mouse.startListening(canvas);
