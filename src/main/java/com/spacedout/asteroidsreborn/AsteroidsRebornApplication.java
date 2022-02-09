@@ -2,6 +2,7 @@ package com.spacedout.asteroidsreborn;
 
 import com.spacedout.asteroidsreborn.game_objects.Background;
 import com.spacedout.asteroidsreborn.game_objects.GameObject;
+import com.spacedout.asteroidsreborn.game_objects.Laser;
 import com.spacedout.asteroidsreborn.game_objects.Player;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -24,22 +25,25 @@ public class AsteroidsRebornApplication extends Application {
 
 	public static boolean debugging = false;
 
+	public static ArrayList<GameObject> gameObjects;
+	public static Scene scene;
 
 	@Override
 	public void start(Stage stage) throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(AsteroidsRebornApplication.class.getResource("game-window.fxml"));
-		Scene scene = new Scene(fxmlLoader.load(), 1080, 720);
+		scene = new Scene(fxmlLoader.load(), 1080, 720);
 
 		Canvas canvas = (Canvas) scene.lookup("#gameCanvas"); // probs should be global as they will still exist for the same amt of time if global or kept here...
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 
-		ArrayList<GameObject> gameObjects = new ArrayList<>(); // doesn't need to be global as not used outside here
 
+		gameObjects = new ArrayList<>();// doesn't need to be global as not used outside here
 
 		Player player = new Player(0, 0, 60, 60, "file:spaceship.png", gc);
 
 		gameObjects.add(new Background(0, 0, 0, 0, gc, player, 70));
 		gameObjects.add(player);
+//		gameObjects.add(new Laser(player.getCentreX(), player.getCentreY(), 50, 3, 1, gc, player.getRotation(), 10, "#FFF"));
 
 		Mouse.startListening(canvas);
 

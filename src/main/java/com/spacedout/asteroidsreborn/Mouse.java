@@ -15,7 +15,6 @@ public final class Mouse {
 			Mouse.x = e.getSceneX();
 			Mouse.y = e.getSceneY();
 			Mouse.primaryButton = e.isPrimaryButtonDown();
-//			System.out.println(Mouse.x + " " + Mouse.y);
 		};
 
 		c.addEventFilter(MouseEvent.ANY, eventHandler);

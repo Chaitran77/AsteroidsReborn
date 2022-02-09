@@ -3,9 +3,14 @@ package com.spacedout.asteroidsreborn.game_objects;
 import com.spacedout.asteroidsreborn.AsteroidsRebornApplication;
 import com.spacedout.asteroidsreborn.GameWindowController;
 import com.spacedout.asteroidsreborn.Mouse;
+import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
+
+import static com.spacedout.asteroidsreborn.AsteroidsRebornApplication.scene;
 
 public class Player extends GameObject {
 	// player stays in middle of screen but moves through the universe
@@ -29,6 +34,18 @@ public class Player extends GameObject {
 		// following saves computing the x and y position of the image, since it is constant (canvas is temporary)
 		this.centreX = (int) canvas.getWidth()/2 - width/2;
 		this.centreY = (int) canvas.getHeight()/2 - height/2;
+
+		// listen for shoot event
+		EventHandler<KeyEvent> keyEventHandler = e -> {
+			System.out.println("shoot");
+			this.shoot();
+		};
+
+		scene.addEventFilter(KeyEvent.ANY, keyEventHandler);
+	}
+
+	private void shoot() {
+		AsteroidsRebornApplication.gameObjects.add(new Laser(this.getCentreX(), this.getCentreY(), 50, 3, 1, gc, this, (int) this.getRotation(), 10, "#FFF"));
 	}
 
 	@Override
@@ -109,4 +126,6 @@ public class Player extends GameObject {
 	public int getCentreY() {
 		return centreY;
 	}
+
+	public double getRotation() { return rotation; }
 }
