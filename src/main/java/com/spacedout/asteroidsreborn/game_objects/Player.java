@@ -53,7 +53,7 @@ public class Player extends GameObject {
 
 		// Save canvas state (rotation = 0deg, other effects), rotate, draw, restore --> player image is drawn rotated
 		this.gc.save();
-		this.rotate(this.gc, this.rotation, this.gc.getCanvas().getWidth()/2, this.gc.getCanvas().getHeight()/2);
+		this.rotate(this.gc, this.rotation+90, this.gc.getCanvas().getWidth()/2, this.gc.getCanvas().getHeight()/2);
 		this.gc.drawImage(this.image, this.centreX, this.centreY, this.width, this.height);
 
 		if (Mouse.isPrimaryButton() || (this.thrusterLength != 0)) {
@@ -94,7 +94,11 @@ public class Player extends GameObject {
 			this.thrusterLength -= 2; // TODO: Rate of thruster length decrease
 		}
 
-		this.rotation = Math.toDegrees(Math.atan2((Mouse.getY() -this.centreY), (Mouse.getX() -this.centreX))) + 90;
+		this.rotation = Math.toDegrees(Math.atan2((Mouse.getY() -this.centreY), (Mouse.getX() -this.centreX))); //cannot + 90 here as that would cause values to exceed 360
+
+		this.rotation = ((this.rotation + 720) % 360);
+
+		System.out.println(this.rotation);
 
 
 		// try and get the x and y velocity components equal to 0 if not already
