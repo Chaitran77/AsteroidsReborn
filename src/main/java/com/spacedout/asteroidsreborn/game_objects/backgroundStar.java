@@ -2,7 +2,6 @@ package com.spacedout.asteroidsreborn.game_objects;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.Bloom;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.Shadow;
 import javafx.scene.paint.Color;

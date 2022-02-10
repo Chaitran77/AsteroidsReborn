@@ -24,6 +24,10 @@ public class Laser extends GameObject {
 
     }
 
+    public void hitObject(GameObject obj) {
+
+    }
+
     @Override
     public void draw() {
         // Save canvas state (rotation = 0deg, other effects), rotate, draw, restore --> player image is drawn rotated
@@ -38,5 +42,8 @@ public class Laser extends GameObject {
     public void update() {
         this.x += this.dx;
         this.y += this.dy;
+
+        // black holes may influence direction, therefore rotation needs to be changed as well
+//        this.rotation = Math.atan2()
     }
 }

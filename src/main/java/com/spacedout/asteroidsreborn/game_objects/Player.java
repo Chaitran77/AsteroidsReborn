@@ -1,13 +1,11 @@
 package com.spacedout.asteroidsreborn.game_objects;
 
 import com.spacedout.asteroidsreborn.AsteroidsRebornApplication;
-import com.spacedout.asteroidsreborn.GameWindowController;
 import com.spacedout.asteroidsreborn.Mouse;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
 
 import static com.spacedout.asteroidsreborn.AsteroidsRebornApplication.scene;
@@ -45,7 +43,7 @@ public class Player extends GameObject {
 	}
 
 	private void shoot() {
-		AsteroidsRebornApplication.gameObjects.add(new Laser(this.getCentreX(), this.getCentreY(), 50, 3, 1, gc, this, (int) this.getRotation(), 10, "#FFF"));
+		AsteroidsRebornApplication.gameObjects.add(new Laser(this.getCentreX(), this.getCentreY(), 50, 3, 1, gc, this, (int) this.getRotation(), 30, "#0F0"));
 	}
 
 	@Override

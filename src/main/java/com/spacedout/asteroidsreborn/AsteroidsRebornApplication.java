@@ -7,11 +7,13 @@ import com.spacedout.asteroidsreborn.game_objects.Player;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Paint;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -30,10 +32,17 @@ public class AsteroidsRebornApplication extends Application {
 
 	@Override
 	public void start(Stage stage) throws IOException {
+
+		Rectangle2D screenDimensions = Screen.getPrimary().getVisualBounds();
+
 		FXMLLoader fxmlLoader = new FXMLLoader(AsteroidsRebornApplication.class.getResource("game-window.fxml"));
-		scene = new Scene(fxmlLoader.load(), 1080, 720);
+		scene = new Scene(fxmlLoader.load(), screenDimensions.getWidth()/2, screenDimensions.getHeight()/2);
 
 		Canvas canvas = (Canvas) scene.lookup("#gameCanvas"); // probs should be global as they will still exist for the same amt of time if global or kept here...
+
+		canvas.setWidth(screenDimensions.getWidth()/2);
+		canvas.setHeight(screenDimensions.getHeight()/2);
+
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 
 
