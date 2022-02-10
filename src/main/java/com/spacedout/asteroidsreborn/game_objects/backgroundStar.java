@@ -15,7 +15,8 @@ public class backgroundStar extends GameObject {
 
 	public backgroundStar(int x, int y, int depthFromPlayer, Player player, GraphicsContext gc, Color colour) {
 		// max width = 10px, min = 1px
-		super(x, y, depthFromPlayer, depthFromPlayer, depthFromPlayer, gc);
+		// bg stars don't have mass
+		super(x, y, depthFromPlayer, depthFromPlayer, depthFromPlayer, gc, 0);
 
 		this.player = player;
 		this.canvas = gc.getCanvas();

@@ -24,8 +24,8 @@ public class Player extends GameObject {
 	protected double thrusterLength = 0; // max 100px
 
 
-	public Player(int x, int y, int width, int height, String imagePath, GraphicsContext gc) {
-		super(x, y, width, height, 0, imagePath, gc);
+	public Player(int x, int y, int width, int height, String imagePath, GraphicsContext gc, int mass) {
+		super(x, y, width, height, 0, imagePath, gc, mass);
 
 		Canvas canvas = gc.getCanvas();
 
@@ -96,7 +96,6 @@ public class Player extends GameObject {
 
 		this.rotation = ((this.rotation + 720) % 360);
 
-		System.out.println(this.rotation);
 
 
 		// try and get the x and y velocity components equal to 0 if not already

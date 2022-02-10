@@ -9,9 +9,10 @@ public class Laser extends GameObject {
     protected double dy; // calculated in constructor from speed
     protected double dx;
     protected Player player;
+    
 
     public Laser(int x, int y, int width, int height, double depthFromPlayer, GraphicsContext gc, Player player, int rotation, int speed, String colour) {
-        super(x, y, width, height, depthFromPlayer, gc);
+        super(x, y, width, height, depthFromPlayer, gc, 1);
 
         this.player = player;
         this.colour = Paint.valueOf(colour);

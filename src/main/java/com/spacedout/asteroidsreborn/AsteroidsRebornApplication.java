@@ -25,7 +25,7 @@ import java.util.Random;
 
 public class AsteroidsRebornApplication extends Application {
 
-	public static boolean debugging = false;
+	public static boolean debugging = true;
 
 	public static ArrayList<GameObject> gameObjects;
 	public static Scene scene;
@@ -48,9 +48,10 @@ public class AsteroidsRebornApplication extends Application {
 
 		gameObjects = new ArrayList<>();// doesn't need to be global as not used outside here
 
-		Player player = new Player(0, 0, 60, 60, "file:spaceship.png", gc);
+		Player player = new Player(0, 0, 60, 60, "file:spaceship.png", gc, 10);
 
-		gameObjects.add(new Background(0, 0, 0, 0, gc, player, 70));
+		// background has no mass
+		gameObjects.add(new Background(0, 0, 0, 0, gc, player, 70, 0));
 		gameObjects.add(player);
 //		gameObjects.add(new Laser(player.getCentreX(), player.getCentreY(), 50, 3, 1, gc, player.getRotation(), 10, "#FFF"));
 
