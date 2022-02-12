@@ -78,10 +78,10 @@ public class Player extends GameObject {
 
 			// if the magnitude of the velocity (given by sqrt of the sum of x and y components squared) < max speed, increase both components
 			if (Math.abs(this.dx) < 200) { // TODO: Max speed = 100
-				this.dx += (Math.signum(Mouse.getX() - this.centreX) * -4); // TODO: |Acceleration| = 2
+				this.dx += -5*Math.cos(Math.toRadians(this.rotation)); // TODO: |Acceleration| = 2, horizontal velocity multiplier
 			}
-			if (Math.abs(this.dy) < 200) { // TODO: Max speed = 100
-				this.dy += (Math.signum(Mouse.getY() - this.centreY) * -4);
+			if (Math.abs(this.dy) < 200) {
+				this.dy += -5*Math.sin(Math.toRadians(this.rotation));
 			}
 
 			if (this.thrusterLength < 50) {
