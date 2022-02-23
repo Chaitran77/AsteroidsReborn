@@ -1,9 +1,6 @@
 package com.spacedout.asteroidsreborn;
 
-import com.spacedout.asteroidsreborn.game_objects.Background;
-import com.spacedout.asteroidsreborn.game_objects.GameObject;
-import com.spacedout.asteroidsreborn.game_objects.Laser;
-import com.spacedout.asteroidsreborn.game_objects.Player;
+import com.spacedout.asteroidsreborn.game_objects.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -30,6 +27,8 @@ public class AsteroidsRebornApplication extends Application {
 	public static ArrayList<GameObject> gameObjects;
 	public static Scene scene;
 
+	public static double gravitationalConstant = 0.05;
+
 	@Override
 	public void start(Stage stage) throws IOException {
 
@@ -45,7 +44,6 @@ public class AsteroidsRebornApplication extends Application {
 
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 
-
 		gameObjects = new ArrayList<>();// doesn't need to be global as not used outside here
 
 		Player player = new Player(0, 0, 60, 60, "file:spaceship.png", gc, 10);
@@ -53,7 +51,13 @@ public class AsteroidsRebornApplication extends Application {
 		// background has no mass
 		gameObjects.add(new Background(0, 0, 0, 0, gc, player, 70, 0));
 		gameObjects.add(player);
-//		gameObjects.add(new Laser(player.getCentreX(), player.getCentreY(), 50, 3, 1, gc, player.getRotation(), 10, "#FFF"));
+		gameObjects.add(new Planet(0, 0, 1000, 9, gc, 10000));
+
+		// correct positions of all GameObjects
+		for (GameObject object: gameObjects) {
+			object.setX((int) (object.getX() + canvas.getWidth()/2));
+			object.setY((int) (object.getY() + canvas.getHeight()/2));
+		}
 
 		Mouse.startListening(canvas);
 
@@ -72,11 +76,11 @@ public class AsteroidsRebornApplication extends Application {
 					gc.setStroke(Paint.valueOf("#FFF"));
 
 					gc.moveTo(player.getCentreX(), player.getCentreY());
-					gc.lineTo(player.getCentreX()+(player.getDx()), player.getCentreY());
+					gc.lineTo(player.getCentreX()-(player.getDx()), player.getCentreY());
 					gc.stroke();
 
 					gc.moveTo(player.getCentreX(), player.getCentreY());
-					gc.lineTo(player.getCentreX(), player.getCentreY()+(player.getDy()));
+					gc.lineTo(player.getCentreX(), player.getCentreY()-(player.getDy()));
 					gc.stroke();
 				}
 			}

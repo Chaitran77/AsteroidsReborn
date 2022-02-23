@@ -5,9 +5,11 @@ import com.spacedout.asteroidsreborn.Mouse;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Paint;
 
+import static com.spacedout.asteroidsreborn.AsteroidsRebornApplication.gameObjects;
 import static com.spacedout.asteroidsreborn.AsteroidsRebornApplication.scene;
 
 public class Player extends GameObject {
@@ -22,6 +24,8 @@ public class Player extends GameObject {
 	protected int centreY;
 
 	protected double thrusterLength = 0; // max 100px
+
+	protected GaussianBlur thrusterBlur;
 
 
 	public Player(int x, int y, int width, int height, String imagePath, GraphicsContext gc, int mass) {
@@ -40,10 +44,12 @@ public class Player extends GameObject {
 		};
 
 		scene.addEventFilter(KeyEvent.ANY, keyEventHandler);
+
+		this.thrusterBlur = new GaussianBlur(5);
 	}
 
 	private void shoot() {
-		AsteroidsRebornApplication.gameObjects.add(new Laser(this.getCentreX(), this.getCentreY(), 50, 3, 1, gc, this, (int) this.getRotation(), 30, "#0F0"));
+		gameObjects.add(new Laser(this.getCentreX(), this.getCentreY(), 50, 3, 1, gc, this, (int) this.getRotation(), 30, "#0F0"));
 	}
 
 	@Override
@@ -57,13 +63,12 @@ public class Player extends GameObject {
 		if (Mouse.isPrimaryButton() || (this.thrusterLength != 0)) {
 			// draw the thruster
 			this.gc.setFill(Paint.valueOf("rgba(79, 181, 255, 0.9)")); // TODO: Thruster colour
+			this.gc.setEffect(this.thrusterBlur);
 			this.gc.beginPath();
 			this.gc.moveTo(this.centreX + 20, this.centreY + 60);
 			this.gc.lineTo(this.centreX + 30, this.centreY + 60 + this.thrusterLength);
 			this.gc.lineTo(this.centreX + 40, this.centreY + 60);
 			this.gc.fill();
-
-
 		}
 		this.gc.restore();
 
@@ -92,11 +97,32 @@ public class Player extends GameObject {
 			this.thrusterLength -= 2; // TODO: Rate of thruster length decrease
 		}
 
-		this.rotation = Math.toDegrees(Math.atan2((Mouse.getY() -this.centreY), (Mouse.getX() -this.centreX))); //cannot + 90 here as that would cause values to exceed 360
+		// impart gravitational acceleration by all other GameObjects on player (this way, only the player is affected, and they don't affect each other)
+		for (GameObject object: gameObjects) {
+			if (!(object instanceof Player || object instanceof Background)) {
+				if ((Math.pow(this.x - object.x, 2) + Math.pow(this.y - object.y, 2)) > Math.pow(object.width/2, 2)) {
+					// change each component by the acceleration constant multiplied by the displacement in that component's axis
+					if ((this.x - object.x) != 0) { // otherwise result will be infinity (better than div by zero error)
+						this.dx += (object.accelerationConstant * Math.pow(this.x - object.x, -1));
+					}
+					if ((this.y - object.y) != 0) {
+						this.dy += (object.accelerationConstant * Math.pow(this.y - object.y, -1));
+					}
+				}
+			}
+		}
 
-		this.rotation = ((this.rotation + 720) % 360);
-
-
+		// now move all the other GameObjects
+		for (GameObject object: gameObjects) {
+			if (!(object instanceof Player)) { // skip player
+				if (!(object instanceof Background)) {
+					object.x += (this.dx/4 * (object.depthFromPlayer/10));
+					object.y += (this.dy/4 * (object.depthFromPlayer/10));
+				} else {
+					// just skip (already moved in mainloop)
+				}
+			}
+		}
 
 		// try and get the x and y velocity components equal to 0 if not already
 		if (this.dx != 0) {
@@ -107,9 +133,9 @@ public class Player extends GameObject {
 		}
 
 
-//      instead of applying to player (like following), apply to stars
-//		this.x += this.dx;
-//		this.y += this.dy;
+		this.rotation = Math.toDegrees(Math.atan2((Mouse.getY() -this.centreY), (Mouse.getX() -this.centreX))); //cannot + 90 here as that would cause values to exceed 360
+		this.rotation = ((this.rotation + 720) % 360);
+
 	}
 
 	public int getDx() {

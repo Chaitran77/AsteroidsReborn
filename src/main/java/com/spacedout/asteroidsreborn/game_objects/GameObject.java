@@ -1,5 +1,6 @@
 package com.spacedout.asteroidsreborn.game_objects;
 
+import com.spacedout.asteroidsreborn.AsteroidsRebornApplication;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.transform.Rotate;
@@ -14,7 +15,7 @@ public abstract class GameObject {
 	protected GraphicsContext gc;
 
 	protected int mass;
-	protected double gravitationalAcceleration;
+	protected double accelerationConstant;
 
 
 	public GameObject(int x, int y, int width, int height, double depthFromPlayer, String imagePath, GraphicsContext gc, int mass) {
@@ -27,7 +28,7 @@ public abstract class GameObject {
 		this.gc = gc;
 		this.mass = mass;
 		// calculate gravitationalAcceleration based on mass
-		this.gravitationalAcceleration = gravitationalAcceleration;
+		this.accelerationConstant = mass * AsteroidsRebornApplication.gravitationalConstant;
 	}
 
 	// constructor for objects without external images
@@ -40,7 +41,7 @@ public abstract class GameObject {
 		this.gc = gc;
 		this.mass = mass;
 		// calculate gravitationalAcceleration based on mass
-		this.gravitationalAcceleration = gravitationalAcceleration;
+		this.accelerationConstant = mass * AsteroidsRebornApplication.gravitationalConstant;
 	}
 
 	protected void rotate(GraphicsContext gc, double angle, double px, double py) {

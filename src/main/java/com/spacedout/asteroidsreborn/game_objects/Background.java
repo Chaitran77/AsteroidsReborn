@@ -20,7 +20,6 @@ public class Background extends GameObject {
 		Random random = new Random();
 
 		stars = new backgroundStar[numberOfStars];
-		System.out.println(random.nextInt((int) canvas.getWidth()));
 
 		for (int i = 0; i < numberOfStars; i++) {
 
