@@ -102,11 +102,12 @@ public class Player extends GameObject {
 			if (!(object instanceof Player || object instanceof Background)) {
 				if ((Math.pow(this.x - object.x, 2) + Math.pow(this.y - object.y, 2)) > Math.pow(object.width/2, 2)) {
 					// change each component by the acceleration constant multiplied by the displacement in that component's axis
+					// TODO: NOT JUST ADD, SUBTRACT AS WELL!!
 					if ((this.x - object.x) != 0) { // otherwise result will be infinity (better than div by zero error)
-						this.dx += (object.accelerationConstant * Math.pow(this.x - object.x, -1));
+						this.dx += (Math.pow(object.accelerationConstant, -1) * (this.x - object.x));
 					}
 					if ((this.y - object.y) != 0) {
-						this.dy += (object.accelerationConstant * Math.pow(this.y - object.y, -1));
+						this.dy += (Math.pow(object.accelerationConstant, -1) * (this.y - object.y));
 					}
 				}
 			}
