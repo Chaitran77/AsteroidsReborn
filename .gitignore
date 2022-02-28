@@ -1,2 +1,3 @@
 # Project exclude paths
 /target/!/.idea/libraries/
+/target/classes/com/spacedout/asteroidsreborn/game-window.fxml
