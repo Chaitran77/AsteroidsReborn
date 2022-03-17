@@ -5,7 +5,6 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -15,7 +14,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 
 // this is where all the backend stuff happens (where we control and store our game objects - asteroids, spaceships etc...)
@@ -27,7 +25,7 @@ public class AsteroidsRebornApplication extends Application {
 	public static ArrayList<GameObject> gameObjects;
 	public static Scene scene;
 
-	public static double gravitationalConstant = 0.05;
+	public static double gravitationalConstant = 0.15;
 
 	@Override
 	public void start(Stage stage) throws IOException {
@@ -35,12 +33,12 @@ public class AsteroidsRebornApplication extends Application {
 		Rectangle2D screenDimensions = Screen.getPrimary().getVisualBounds();
 
 		FXMLLoader fxmlLoader = new FXMLLoader(AsteroidsRebornApplication.class.getResource("game-window.fxml"));
-		scene = new Scene(fxmlLoader.load(), screenDimensions.getWidth()/1.25, screenDimensions.getHeight()/1.25);
+		scene = new Scene(fxmlLoader.load(), screenDimensions.getWidth()/2, screenDimensions.getHeight()/2);
 
 		Canvas canvas = (Canvas) scene.lookup("#gameCanvas"); // probs should be global as they will still exist for the same amt of time if global or kept here...
 
-		canvas.setWidth(screenDimensions.getWidth()/1.25);
-		canvas.setHeight(screenDimensions.getHeight()/1.25);
+		canvas.setWidth(screenDimensions.getWidth()/2);
+		canvas.setHeight(screenDimensions.getHeight()/2);
 
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 
@@ -51,7 +49,8 @@ public class AsteroidsRebornApplication extends Application {
 		// background has no mass
 		gameObjects.add(new Background(0, 0, 0, 0, gc, player, 70, 0));
 		gameObjects.add(player);
-		gameObjects.add(new Planet(0, 0, 1000, 9, gc, 10000));
+		gameObjects.add(new Planet(1000, 1000, 1000, 9, gc, 500000));
+		gameObjects.add(new Planet(-1000, -1000, 500, 9, gc, 500000));
 
 		// correct positions of all GameObjects
 		for (GameObject object: gameObjects) {
@@ -99,6 +98,10 @@ public class AsteroidsRebornApplication extends Application {
 		} else {
 			return random.nextInt(upperBound/2, upperBound);
 		}
+	}
+
+	public static double constrainToRange(double value, double min, double max) {
+		return Math.max(min, Math.min(value, max));
 	}
 
 	public static void main(String[] args) { launch(); }

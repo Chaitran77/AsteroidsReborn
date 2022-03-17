@@ -6,8 +6,8 @@ import javafx.scene.image.Image;
 import javafx.scene.transform.Rotate;
 
 public abstract class GameObject {
-	protected int x;
-	protected int y;
+	protected double x;
+	protected double y;
 	protected int width;
 	protected int height;
 	protected double depthFromPlayer;
@@ -57,19 +57,19 @@ public abstract class GameObject {
 
 
 
-	public int getX() {
+	public double getX() {
 		return x;
 	}
 
-	public void setX(int x) {
+	public void setX(double x) {
 		this.x = x;
 	}
 
-	public int getY() {
+	public double getY() {
 		return y;
 	}
 
-	public void setY(int y) {
+	public void setY(double y) {
 		this.y = y;
 	}
 }

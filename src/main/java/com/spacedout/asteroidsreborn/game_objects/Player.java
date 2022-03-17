@@ -15,8 +15,8 @@ import static com.spacedout.asteroidsreborn.AsteroidsRebornApplication.scene;
 public class Player extends GameObject {
 	// player stays in middle of screen but moves through the universe
 
-	protected int dx = 0;
-	protected int dy = 0;
+	protected double dx = 0;
+	protected double dy = 0;
 
 	protected double rotation = 0; // degrees
 
@@ -82,10 +82,10 @@ public class Player extends GameObject {
 //			Must use centreX and centreY because it is relative to the screen and so is the mouse
 
 			// if the magnitude of the velocity (given by sqrt of the sum of x and y components squared) < max speed, increase both components
-			if (Math.abs(this.dx) < 200) { // TODO: Max speed = 100
+			if (Math.abs(this.dx) < 200d) { // TODO: Max speed = 100
 				this.dx += -5*Math.cos(Math.toRadians(this.rotation)); // TODO: |Acceleration| = 2, horizontal velocity multiplier
 			}
-			if (Math.abs(this.dy) < 200) {
+			if (Math.abs(this.dy) < 200d) {
 				this.dy += -5*Math.sin(Math.toRadians(this.rotation));
 			}
 
@@ -100,16 +100,23 @@ public class Player extends GameObject {
 		// impart gravitational acceleration by all other GameObjects on player (this way, only the player is affected, and they don't affect each other)
 		for (GameObject object: gameObjects) {
 			if (!(object instanceof Player || object instanceof Background)) {
-				if ((Math.pow(this.x - object.x, 2) + Math.pow(this.y - object.y, 2)) > Math.pow(object.width/2, 2)) {
+				// if outside circle
+
 					// change each component by the acceleration constant multiplied by the displacement in that component's axis
 					// TODO: NOT JUST ADD, SUBTRACT AS WELL!!
 					if ((this.x - object.x) != 0) { // otherwise result will be infinity (better than div by zero error)
-						this.dx += (Math.pow(object.accelerationConstant, -1) * (this.x - object.x));
+						this.dx += Math.toDegrees(Math.cos(Math.atan2(this.y- object.y, this.x-object.x))) * object.accelerationConstant/(Math.pow(this.y - object.y, 2) + Math.pow(this.x - object.x, 2));
 					}
 					if ((this.y - object.y) != 0) {
-						this.dy += (Math.pow(object.accelerationConstant, -1) * (this.y - object.y));
+						this.dy += Math.toDegrees(Math.sin(Math.atan2(this.y- object.y, this.x-object.x))) * object.accelerationConstant/(Math.pow(this.y - object.y, 2) + Math.pow(this.x - object.x, 2));
 					}
-				}
+
+//					reverse velocity if inside circle
+					if ((Math.pow(this.x - object.x, 2) + Math.pow(this.y - object.y, 2)) < Math.pow(object.width/2d, 2)) {
+						System.out.println("REV");
+						this.dy = -2*this.dy;
+						this.dx = -2*this.dx;
+					}
 			}
 		}
 
@@ -126,11 +133,11 @@ public class Player extends GameObject {
 		}
 
 		// try and get the x and y velocity components equal to 0 if not already
-		if (this.dx != 0) {
-			this.dx -= (Math.signum(this.dx)*0.001); // TODO: |deceleration| = 0.01
+		if (this.dx != 0d) {
+			this.dx -= (Math.signum(this.dx)*1); // TODO: |deceleration| = 0.01
 		}
-		if (this.dy != 0) {
-			this.dy -= (Math.signum(this.dy)*0.001);
+		if (this.dy != 0d) {
+			this.dy -= (Math.signum(this.dy)*1);
 		}
 
 
@@ -139,11 +146,11 @@ public class Player extends GameObject {
 
 	}
 
-	public int getDx() {
+	public double getDx() {
 		return dx;
 	}
 
-	public int getDy() {
+	public double getDy() {
 		return dy;
 	}
 
