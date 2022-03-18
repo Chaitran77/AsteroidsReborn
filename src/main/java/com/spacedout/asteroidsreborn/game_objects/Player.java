@@ -1,6 +1,5 @@
 package com.spacedout.asteroidsreborn.game_objects;
 
-import com.spacedout.asteroidsreborn.AsteroidsRebornApplication;
 import com.spacedout.asteroidsreborn.Mouse;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
@@ -29,7 +28,7 @@ public class Player extends GameObject {
 
 
 	public Player(int x, int y, int width, int height, String imagePath, GraphicsContext gc, int mass) {
-		super(x, y, width, height, 0, imagePath, gc, mass);
+		super(x, y, width, height, 0, imagePath, gc, mass, false);
 
 		Canvas canvas = gc.getCanvas();
 
@@ -111,11 +110,11 @@ public class Player extends GameObject {
 						this.dy += Math.toDegrees(Math.sin(Math.atan2(this.y- object.y, this.x-object.x))) * object.accelerationConstant/(Math.pow(this.y - object.y, 2) + Math.pow(this.x - object.x, 2));
 					}
 
-//					reverse velocity if inside circle
+					// reverse velocity if inside circle
 					if ((Math.pow(this.x - object.x, 2) + Math.pow(this.y - object.y, 2)) < Math.pow(object.width/2d, 2)) {
 						System.out.println("REV");
-						this.dy = -2*this.dy;
-						this.dx = -2*this.dx;
+						this.dy = -0.9*this.dy;
+						this.dx = -0.9*this.dx;
 					}
 			}
 		}

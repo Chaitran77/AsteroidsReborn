@@ -8,8 +8,8 @@ public class Planet extends GameObject {
 
 
 
-	public Planet(int x, int y, int diameter, double depthFromPlayer, GraphicsContext gc, int mass) {
-		super(x, y, diameter, diameter, depthFromPlayer, gc, mass);
+	public Planet(int x, int y, int diameter, double depthFromPlayer, String imagePath, GraphicsContext gc, int mass) {
+		super(x, y, diameter, diameter, depthFromPlayer, imagePath, gc, mass, true);
 	}
 
 	@Override
