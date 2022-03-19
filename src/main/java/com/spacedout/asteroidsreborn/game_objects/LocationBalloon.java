@@ -31,8 +31,13 @@ public class LocationBalloon extends GameObject {
 		double y = AsteroidsRebornApplication.constrainToRange(object.y, 0, gc.getCanvas().getHeight()-100);
 
 		if (!(((x < canvas.getWidth()-100)&&(x > 0)) && ((y < canvas.getHeight()-100)&&(y > 0)))) {
+			double rotation = Math.toDegrees(Math.atan2(object.y - player.y, object.x - player.x)) + 270;
+
+			this.gc.save();
+			this.rotate(this.gc, rotation, x + 25, y + 50);
 			this.gc.drawImage(this.pinImage, x, y);
 			this.gc.drawImage(object.pointerIcon, x+(this.pinImage.getWidth()/2-object.pointerIcon.getWidth()/2), y+5);
+			this.gc.restore();
 		}
 	}
 
