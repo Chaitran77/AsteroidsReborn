@@ -1,3 +1,10 @@
 # Project exclude paths
 /target/!/.idea/libraries/
 /target/classes/com/spacedout/asteroidsreborn/game-window.fxml
+!/.idea/libraries/Maven__org_openjfx_javafx_base_linux_17_0_1.xml
+
+!/.idea/libraries/Maven__org_openjfx_javafx_controls_linux_17_0_1.xml
+
+!/.idea/libraries/Maven__org_openjfx_javafx_fxml_linux_17_0_1.xml
+
+!/.idea/libraries/Maven__org_openjfx_javafx_graphics_linux_17_0_1.xml
