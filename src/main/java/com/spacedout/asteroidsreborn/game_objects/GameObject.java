@@ -12,27 +12,32 @@ public abstract class GameObject {
 	protected int height;
 	protected double depthFromPlayer;
 	protected Image image;
+	protected Image pointerIcon;
 	protected GraphicsContext gc;
 
 	protected int mass;
 	protected double accelerationConstant;
 
+	protected boolean requiresLocationBalloon;
 
-	public GameObject(int x, int y, int width, int height, double depthFromPlayer, String imagePath, GraphicsContext gc, int mass) {
+
+	public GameObject(int x, int y, int width, int height, double depthFromPlayer, String imagePath, GraphicsContext gc, int mass, boolean requiresLocationBalloon) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.depthFromPlayer = depthFromPlayer;
-		this.image = new Image(imagePath);
+		this.image = new Image(imagePath, width, height, true, true);
+		this.pointerIcon = new Image(imagePath, 40, 40, true, true);
 		this.gc = gc;
 		this.mass = mass;
 		// calculate gravitationalAcceleration based on mass
 		this.accelerationConstant = mass * AsteroidsRebornApplication.gravitationalConstant;
+		this.requiresLocationBalloon = requiresLocationBalloon;
 	}
 
 	// constructor for objects without external images
-	public GameObject(int x, int y, int width, int height, double depthFromPlayer, GraphicsContext gc, int mass) {
+	public GameObject(int x, int y, int width, int height, double depthFromPlayer, GraphicsContext gc, int mass, boolean requiresLocationBalloon) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -42,6 +47,7 @@ public abstract class GameObject {
 		this.mass = mass;
 		// calculate gravitationalAcceleration based on mass
 		this.accelerationConstant = mass * AsteroidsRebornApplication.gravitationalConstant;
+		this.requiresLocationBalloon = requiresLocationBalloon;
 	}
 
 	protected void rotate(GraphicsContext gc, double angle, double px, double py) {
@@ -49,12 +55,15 @@ public abstract class GameObject {
 		gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
 	}
 
+	// TODO: directional explosion (flat explosion rotated to be at tangent to planet surface)
+	// in any collision, the GameObject with a smaller mass explodes.
 
 	public abstract void draw();
 
-	// must be overridden
-	public abstract void update();
 
+	// must be overridden
+
+	public abstract void update();
 
 
 	public double getX() {
@@ -71,5 +80,13 @@ public abstract class GameObject {
 
 	public void setY(double y) {
 		this.y = y;
+	}
+
+	public int getMass() {
+		return mass;
+	}
+
+	public boolean requiresLocationBalloon() {
+		return requiresLocationBalloon;
 	}
 }

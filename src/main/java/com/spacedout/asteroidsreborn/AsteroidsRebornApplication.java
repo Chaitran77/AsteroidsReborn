@@ -25,7 +25,7 @@ public class AsteroidsRebornApplication extends Application {
 	public static ArrayList<GameObject> gameObjects;
 	public static Scene scene;
 
-	public static double gravitationalConstant = 0.15;
+	public static double gravitationalConstant = 0.019;
 
 	@Override
 	public void start(Stage stage) throws IOException {
@@ -49,8 +49,10 @@ public class AsteroidsRebornApplication extends Application {
 		// background has no mass
 		gameObjects.add(new Background(0, 0, 0, 0, gc, player, 70, 0));
 		gameObjects.add(player);
-		gameObjects.add(new Planet(1000, 1000, 1000, 9, gc, 500000));
-		gameObjects.add(new Planet(-1000, -1000, 500, 9, gc, 500000));
+		gameObjects.add(new Planet(1000, 1000, 1000, 9, "file:purple-planet.png", gc, 500000));
+		gameObjects.add(new Planet(-1009, -1009, 500, 9, "file:purple-planet.png", gc, 500000));
+
+		LocationBalloon locationBalloon = new LocationBalloon(gc);
 
 		// correct positions of all GameObjects
 		for (GameObject object: gameObjects) {
@@ -66,10 +68,16 @@ public class AsteroidsRebornApplication extends Application {
 			public void handle(long l) {
 				gc.setFill(Paint.valueOf("#000"));
 				gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
 				for (GameObject object: gameObjects) {
 					object.draw();
 					object.update();
+
+					if (object.requiresLocationBalloon()) {
+						locationBalloon.draw(object, player);
+					}
 				}
+
 				if (AsteroidsRebornApplication.debugging) {
 					// draw debug graphics
 					gc.setStroke(Paint.valueOf("#FFF"));
