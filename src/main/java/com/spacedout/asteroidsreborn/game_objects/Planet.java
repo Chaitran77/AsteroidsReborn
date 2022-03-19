@@ -2,6 +2,7 @@ package com.spacedout.asteroidsreborn.game_objects;
 
 import com.spacedout.asteroidsreborn.AsteroidsRebornApplication;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Paint;
 
 public class Planet extends GameObject {
@@ -14,9 +15,7 @@ public class Planet extends GameObject {
 
 	@Override
 	public void draw() {
-		this.gc.setFill(Paint.valueOf("#FFA500"));
-		this.gc.beginPath();
-		this.gc.fillOval(this.x-this.width/2d, this.y-this.width/2d, this.width, this.width);
+		this.gc.drawImage(this.image, this.x-(this.width/2), this.y-(this.height/2));
 	}
 
 	@Override
