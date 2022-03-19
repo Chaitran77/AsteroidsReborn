@@ -27,6 +27,8 @@ public class AsteroidsRebornApplication extends Application {
 
 	public static double gravitationalConstant = 0.019;
 
+	public static Player player;
+
 	@Override
 	public void start(Stage stage) throws IOException {
 
@@ -44,13 +46,16 @@ public class AsteroidsRebornApplication extends Application {
 
 		gameObjects = new ArrayList<>();// doesn't need to be global as not used outside here
 
-		Player player = new Player(0, 0, 60, 60, "file:spaceship.png", gc, 10);
+		player = new Player(0, 0, 60, 60, "file:spaceship.png", gc, 10);
 
 		// background has no mass
 		gameObjects.add(new Background(0, 0, 0, 0, gc, player, 70, 0));
 		gameObjects.add(player);
-		gameObjects.add(new Planet(1000, 1000, 1000, 9, "file:purple-planet.png", gc, 500000));
-		gameObjects.add(new Planet(-1009, -1009, 500, 9, "file:purple-planet.png", gc, 500000));
+		gameObjects.add(new Planet(1000, 1000,  9, "file:purple-planet.png", gc, 500000));
+
+		// the bounce is much bigger with this planet because the diameter is half the other planet, but with the same mass, so the player accelerates more and hits harder
+//		gameObjects.add(new Planet(-1090, -1090, 500, 9, "file:purple-planet.png", gc, 500000));
+		gameObjects.add(new Planet(-1090, -1090, 9, "file:purple-planet.png", gc, 500000));
 
 		LocationBalloon locationBalloon = new LocationBalloon(gc);
 

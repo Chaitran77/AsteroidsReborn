@@ -17,6 +17,8 @@ public class Player extends GameObject {
 	protected double dx = 0;
 	protected double dy = 0;
 
+	protected double maxComponentVel = 50d;
+
 	protected double rotation = 0; // degrees
 
 	protected int centreX;
@@ -31,6 +33,7 @@ public class Player extends GameObject {
 		super(x, y, width, height, 0, imagePath, gc, mass, false);
 
 		Canvas canvas = gc.getCanvas();
+
 
 		// following saves computing the x and y position of the image, since it is constant (canvas is temporary)
 		this.centreX = (int) canvas.getWidth()/2 - width/2;
@@ -48,7 +51,7 @@ public class Player extends GameObject {
 	}
 
 	private void shoot() {
-		gameObjects.add(new Laser(this.getCentreX(), this.getCentreY(), 50, 3, 1, gc, this, (int) this.getRotation(), 30, "#0F0"));
+		gameObjects.add(new Laser(this.getCentreX(), this.getCentreY(), 50, 3, 9, gc, this, (int) this.getRotation(), 10, "#0F0"));
 	}
 
 	@Override
@@ -81,11 +84,11 @@ public class Player extends GameObject {
 //			Must use centreX and centreY because it is relative to the screen and so is the mouse
 
 			// if the magnitude of the velocity (given by sqrt of the sum of x and y components squared) < max speed, increase both components
-			if (Math.abs(this.dx) < 200d) { // TODO: Max speed = 100
-				this.dx += -5*Math.cos(Math.toRadians(this.rotation)); // TODO: |Acceleration| = 2, horizontal velocity multiplier
+			if (Math.abs(this.dx) < this.maxComponentVel) { // TODO: Max speed = 100
+				this.dx += -2*Math.cos(Math.toRadians(this.rotation)); // TODO: |Acceleration| = 2, horizontal velocity multiplier
 			}
-			if (Math.abs(this.dy) < 200d) {
-				this.dy += -5*Math.sin(Math.toRadians(this.rotation));
+			if (Math.abs(this.dy) < this.maxComponentVel) {
+				this.dy += -2*Math.sin(Math.toRadians(this.rotation));
 			}
 
 			if (this.thrusterLength < 50) {
@@ -113,8 +116,8 @@ public class Player extends GameObject {
 					// reverse velocity if inside circle
 					if ((Math.pow(this.x - object.x, 2) + Math.pow(this.y - object.y, 2)) < Math.pow(object.width/2d, 2)) {
 						System.out.println("REV");
-						this.dy = -0.9*this.dy;
-						this.dx = -0.9*this.dx;
+						this.dx = -this.dx;
+						this.dy = -this.dy;
 					}
 			}
 		}
@@ -123,8 +126,10 @@ public class Player extends GameObject {
 		for (GameObject object: gameObjects) {
 			if (!(object instanceof Player)) { // skip player
 				if (!(object instanceof Background)) {
-					object.x += (this.dx/4 * (object.depthFromPlayer/10));
-					object.y += (this.dy/4 * (object.depthFromPlayer/10));
+//					object.x += (this.dx/4 * (object.depthFromPlayer/10));
+//					object.y += (this.dy/4 * (object.depthFromPlayer/10));
+					object.x += this.dx;
+					object.y += this.dy;
 				} else {
 					// just skip (already moved in mainloop)
 				}
@@ -134,9 +139,17 @@ public class Player extends GameObject {
 		// try and get the x and y velocity components equal to 0 if not already
 		if (this.dx != 0d) {
 			this.dx -= (Math.signum(this.dx)*1); // TODO: |deceleration| = 0.01
+
+			if (Math.abs(this.dx) < 0.5) {
+				this.dx = 0; // to prevent jittering
+			}
 		}
 		if (this.dy != 0d) {
 			this.dy -= (Math.signum(this.dy)*1);
+
+			if (Math.abs(this.dy) < 0.5) {
+				this.dy = 0; // to prevent jittering
+			}
 		}
 
 

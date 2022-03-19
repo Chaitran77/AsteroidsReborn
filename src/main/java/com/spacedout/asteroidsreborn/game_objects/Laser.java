@@ -21,8 +21,8 @@ public class Laser extends GameObject {
         this.rotation = rotation;
 
         // The Sine and Cosine functions work by default in radians
-        this.dx = (speed * Math.cos(Math.toRadians(rotation)));
-        this.dy = (speed * Math.sin(Math.toRadians(rotation)));
+        this.dx = (speed * Math.toDegrees(Math.cos(Math.toRadians(rotation))));
+        this.dy = (speed * Math.toDegrees(Math.sin(Math.toRadians(rotation))));
 
 
     }
