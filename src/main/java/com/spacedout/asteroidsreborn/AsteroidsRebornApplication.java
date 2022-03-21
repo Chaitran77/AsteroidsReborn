@@ -23,7 +23,7 @@ import java.util.Random;
 
 // this is where all the backend stuff happens (where we control and store our game objects - asteroids, spaceships etc...)
 
-public class AsteroidsRebornApplication extends Application {
+public class  AsteroidsRebornApplication extends Application {
 
 	public static boolean debugging = true;
 
