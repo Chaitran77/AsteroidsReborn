@@ -30,8 +30,10 @@ public class Planet extends GameObject {
 
 		this.gc.setStroke(Color.WHITE);
 		this.gc.setLineWidth(2);
-		this.gc.setLineDashes(2);
-		this.gc.strokeOval(this.x, this.y, pointOfNoReturnRadius, pointOfNoReturnRadius);
+		this.gc.setLineDashes(12);
+		this.gc.strokeOval(this.x-((this.width+pointOfNoReturnRadius)/2), this.y-((this.width+pointOfNoReturnRadius)/2), this.width+pointOfNoReturnRadius, this.width+pointOfNoReturnRadius);
+		this.gc.setLineWidth(0);
+		this.gc.setLineDashes(0);
 	}
 
 	@Override
