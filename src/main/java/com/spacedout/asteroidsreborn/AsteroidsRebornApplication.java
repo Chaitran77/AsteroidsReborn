@@ -25,7 +25,7 @@ public class AsteroidsRebornApplication extends Application {
 	public static ArrayList<GameObject> gameObjects;
 	public static Scene scene;
 
-	public static double gravitationalConstant = 0.019;
+	public static double gravitationalConstant = 0.050;
 
 	public static Player player;
 
@@ -35,12 +35,14 @@ public class AsteroidsRebornApplication extends Application {
 		Rectangle2D screenDimensions = Screen.getPrimary().getVisualBounds();
 
 		FXMLLoader fxmlLoader = new FXMLLoader(AsteroidsRebornApplication.class.getResource("game-window.fxml"));
-		scene = new Scene(fxmlLoader.load(), screenDimensions.getWidth()/2, screenDimensions.getHeight()/2);
+		scene = new Scene(fxmlLoader.load(), 1920, 1080);
 
 		Canvas canvas = (Canvas) scene.lookup("#gameCanvas"); // probs should be global as they will still exist for the same amt of time if global or kept here...
 
-		canvas.setWidth(screenDimensions.getWidth()/2);
-		canvas.setHeight(screenDimensions.getHeight()/2);
+		canvas.setWidth(1920);
+//		canvas.setWidth(screenDimensions.getWidth()/2);
+		canvas.setHeight(1080);
+//		canvas.setHeight(screenDimensions.getHeight()/2);
 
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 
