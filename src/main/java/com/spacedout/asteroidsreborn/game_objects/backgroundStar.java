@@ -3,37 +3,38 @@ package com.spacedout.asteroidsreborn.game_objects;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.BlurType;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.effect.Shadow;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 public class backgroundStar extends GameObject {
 
 	protected Color colour;
 	protected Player player;
 	private final Canvas canvas;
-	private Shadow shadow;
+	private GaussianBlur blur;
 
 	public backgroundStar(int x, int y, int depthFromPlayer, Player player, GraphicsContext gc, Color colour) {
 		// max width = 10px, min = 1px
 		// bg stars don't have mass
-		super(x, y, depthFromPlayer, depthFromPlayer, depthFromPlayer, gc, 0);
+		super(x, y, depthFromPlayer, depthFromPlayer, depthFromPlayer, gc, 0, false);
 
 		this.player = player;
 		this.canvas = gc.getCanvas();
 		this.colour = colour;
-		this.shadow = new Shadow(this.width+5, this.colour); // TODO: Blurring of stars (strength)
-		this.shadow.setBlurType(BlurType.GAUSSIAN);
+//		this.shadow = new Shadow(this.width+5, this.colour); // TODO: Blurring of stars (strength)
+//		this.shadow.setBlurType(BlurType.GAUSSIAN);
+		this.blur = new GaussianBlur(this.width/3);
 	}
 
 	@Override
 	public void draw() {
-//		this.gc.save();
-//		this.gc.setEffect(new Bloom(1));
-
-
+		this.gc.save();
+		this.gc.setEffect(this.blur);
 		this.gc.setFill(this.colour);
 		this.gc.fillOval(this.x, this.y, this.width, this.height);
-//		this.gc.restore();
+		this.gc.restore();
 	}
 
 	@Override

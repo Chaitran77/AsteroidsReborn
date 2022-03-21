@@ -12,7 +12,7 @@ public class Background extends GameObject {
 	protected backgroundStar[] stars;
 
 	public Background(int x, int y, int width, int height, GraphicsContext gc, Player player, int numberOfStars, int mass) {
-		super(x, y, width, height, 0, gc, mass);
+		super(x, y, width, height, 0, gc, mass,false);
 		this.player = player;
 
 		Canvas canvas = gc.getCanvas();
@@ -20,7 +20,6 @@ public class Background extends GameObject {
 		Random random = new Random();
 
 		stars = new backgroundStar[numberOfStars];
-		System.out.println(random.nextInt((int) canvas.getWidth()));
 
 		for (int i = 0; i < numberOfStars; i++) {
 
