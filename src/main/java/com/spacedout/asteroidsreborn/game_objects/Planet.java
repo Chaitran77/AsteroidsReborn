@@ -8,8 +8,8 @@ import javafx.scene.paint.Paint;
 
 public class Planet extends GameObject {
 
-	// diameter calculated from mass - 500000 (mass) = 1000px (diameter)
-	public static double diameterToMassRatio = 1000/500000d;
+	// diameter calculated from mass - 500000 (mass) = 800px (diameter)
+	public static double diameterToMassRatio = 800/500000d;
 
 	public Planet(int x, int y, double depthFromPlayer, String imagePath, GraphicsContext gc, int mass) {
 		super(x, y,
