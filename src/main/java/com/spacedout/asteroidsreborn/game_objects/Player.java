@@ -8,8 +8,7 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Paint;
 
-import static com.spacedout.asteroidsreborn.AsteroidsRebornApplication.gameObjects;
-import static com.spacedout.asteroidsreborn.AsteroidsRebornApplication.scene;
+import static com.spacedout.asteroidsreborn.AsteroidsRebornApplication.*;
 
 public class Player extends GameObject {
 	// player stays in middle of screen but moves through the universe
@@ -17,7 +16,8 @@ public class Player extends GameObject {
 	protected double dx = 0;
 	protected double dy = 0;
 
-	protected double maxComponentVel = 50d;
+	protected double maxThrustComponentVel = 50d; // for thrust from the mouse
+	protected double maxUniversalVel = 300d; // TODO: MAXUNIVERSALVEL
 
 	protected double rotation = 0; // degrees
 
@@ -41,6 +41,7 @@ public class Player extends GameObject {
 
 		// listen for shoot event
 		EventHandler<KeyEvent> keyEventHandler = e -> {
+			if (!e.getCharacter().equals(" ")) return;
 			System.out.println("shoot");
 			this.shoot();
 		};
@@ -51,7 +52,7 @@ public class Player extends GameObject {
 	}
 
 	private void shoot() {
-		gameObjects.add(new Laser(this.getCentreX(), this.getCentreY(), 50, 3, 9, gc, this, (int) this.getRotation(), 10, "#0F0"));
+		gameObjects.add(new Laser(this.getCentreX(), this.getCentreY(), 50, 3, 9, gc, this, (int) this.getRotation(), 5, "#0F0"));
 	}
 
 	@Override
@@ -77,6 +78,31 @@ public class Player extends GameObject {
 	}
 
 	@Override
+	public String toString() {
+		return "Player{" +
+				"\n    x=" + to2dp(x) +
+				"\n    y=" + to2dp(y) +
+				"\n    width=" + width +
+				"\n    height=" + height +
+				"\n    depthFromPlayer=" + depthFromPlayer +
+				"\n    image=" + image +
+				"\n    pointerIcon=" + pointerIcon +
+				"\n    gc=" + gc +
+				"\n    mass=" + mass +
+				"\n    accelerationConstant=" + accelerationConstant +
+				"\n    requiresLocationBalloon=" + requiresLocationBalloon +
+				"\n    dx=" + to2dp(dx) +
+				"\n    dy=" + to2dp(dy) +
+				"\n    maxComponentVel=" + maxThrustComponentVel +
+				"\n    rotation=" + rotation +
+				"\n    centreX=" + centreX +
+				"\n    centreY=" + centreY +
+				"\n    thrusterLength=" + thrusterLength +
+				"\n    thrusterBlur=" + thrusterBlur +
+				'}';
+	}
+
+	@Override
 	public void update() {
 
 		if (Mouse.isPrimaryButton()) {
@@ -84,11 +110,11 @@ public class Player extends GameObject {
 //			Must use centreX and centreY because it is relative to the screen and so is the mouse
 
 			// if the magnitude of the velocity (given by sqrt of the sum of x and y components squared) < max speed, increase both components
-			if (Math.abs(this.dx) < this.maxComponentVel) { // TODO: Max speed = 100
-				this.dx += -2*Math.cos(Math.toRadians(this.rotation)); // TODO: |Acceleration| = 2, horizontal velocity multiplier
+			if (Math.abs(this.dx) < Math.abs(this.maxThrustComponentVel)) { // TODO: Max speed = 100
+				this.dx += (-0.4*Math.cos(Math.toRadians(this.rotation))); // TODO: |Acceleration| = 2, horizontal velocity multiplier
 			}
-			if (Math.abs(this.dy) < this.maxComponentVel) {
-				this.dy += -2*Math.sin(Math.toRadians(this.rotation));
+			if (Math.abs(this.dy) < Math.abs(this.maxThrustComponentVel)) {
+				this.dy += (-0.4*Math.sin(Math.toRadians(this.rotation)));
 			}
 
 			if (this.thrusterLength < 50) {
@@ -122,6 +148,24 @@ public class Player extends GameObject {
 			}
 		}
 
+		// try and get the x and y velocity components equal to 0 if not already
+		// the min velocity value must be LESS than the min velocity that can be gained otherwise player will never move!
+		if (this.dx != 0d) {
+			this.dx -= (Math.signum(this.dx)*0.1); // TODO: |deceleration| = 0.01
+
+			if (Math.abs(this.dx) < 0.1) {
+				this.dx = 0; // to prevent jittering
+			}
+		}
+		if (this.dy != 0d) {
+			this.dy -= (Math.signum(this.dy)*0.1);
+
+			if (Math.abs(this.dy) < 0.1) {
+				this.dy = 0; // to prevent jittering
+			}
+		}
+
+		// all changes to this.dx and this.dy done so...
 		// now move all the other GameObjects
 		for (GameObject object: gameObjects) {
 			if (!(object instanceof Player)) { // skip player
@@ -136,21 +180,6 @@ public class Player extends GameObject {
 			}
 		}
 
-		// try and get the x and y velocity components equal to 0 if not already
-		if (this.dx != 0d) {
-			this.dx -= (Math.signum(this.dx)*1); // TODO: |deceleration| = 0.01
-
-			if (Math.abs(this.dx) < 0.5) {
-				this.dx = 0; // to prevent jittering
-			}
-		}
-		if (this.dy != 0d) {
-			this.dy -= (Math.signum(this.dy)*1);
-
-			if (Math.abs(this.dy) < 0.5) {
-				this.dy = 0; // to prevent jittering
-			}
-		}
 
 
 		this.rotation = Math.toDegrees(Math.atan2((Mouse.getY() -this.centreY), (Mouse.getX() -this.centreX))); //cannot + 90 here as that would cause values to exceed 360
