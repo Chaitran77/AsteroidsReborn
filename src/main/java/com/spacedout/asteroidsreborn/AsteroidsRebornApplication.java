@@ -20,7 +20,7 @@ import java.util.Random;
 
 public class  AsteroidsRebornApplication extends Application {
 
-	public static boolean debugging = true;
+	private static final boolean debugging = true;
 
 	public static ArrayList<GameObject> gameObjects;
 	public static Scene scene;
@@ -29,8 +29,11 @@ public class  AsteroidsRebornApplication extends Application {
 
 	public static Player player;
 
+	private static DebugWindow debuggingWindow;
+
 	@Override
 	public void start(Stage stage) throws IOException {
+
 
 		Rectangle2D screenDimensions = Screen.getPrimary().getVisualBounds();
 
@@ -57,8 +60,13 @@ public class  AsteroidsRebornApplication extends Application {
 
 		// the bounce is much bigger with this planet because the diameter is half the other planet, but with the same mass, so the player accelerates more and hits harder
 //		gameObjects.add(new Planet(-1090, -1090, 500, 9, "file:purple-planet.png", gc, 500000));
-		gameObjects.add(new Planet(-1000, -1000, 9, "file:purple-planet.png", gc, 1000000));
+		gameObjects.add(new Planet(-1000, -1000, 9, "file:purple-planet.png", gc, 700000));
 
+
+		if (debugging) {
+			// all the GameObjects now present in the gameObjects ArrayList will be debugged
+			debuggingWindow = new DebugWindow(gameObjects.toArray(new GameObject[0]));
+		}
 		LocationBalloon locationBalloon = new LocationBalloon(gc);
 
 		// correct positions of all GameObjects
@@ -83,9 +91,12 @@ public class  AsteroidsRebornApplication extends Application {
 					if (object.requiresLocationBalloon()) {
 						locationBalloon.draw(object, player);
 					}
+
 				}
 
-				if (AsteroidsRebornApplication.debugging) {
+				if (debugging) {
+					debuggingWindow.updateData();
+
 					// draw debug graphics
 					gc.setStroke(Paint.valueOf("#FFF"));
 
@@ -117,6 +128,10 @@ public class  AsteroidsRebornApplication extends Application {
 
 	public static double constrainToRange(double value, double min, double max) {
 		return Math.max(min, Math.min(value, max));
+	}
+
+	public static double to2dp(double number) {
+		return Math.round(number*100)/100D;
 	}
 
 	public static void main(String[] args) { launch(); }
