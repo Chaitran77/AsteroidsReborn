@@ -2,6 +2,7 @@ package com.spacedout.asteroidsreborn.game_objects;
 
 import com.spacedout.asteroidsreborn.Mouse;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.GaussianBlur;
@@ -16,7 +17,7 @@ public class Player extends GameObject {
 	protected double dx = 0;
 	protected double dy = 0;
 
-	protected double maxThrustComponentVel = 80d; // for thrust from the mouse
+	protected double maxThrustComponentVel = 50d; // for thrust from the mouse
 	protected double maxUniversalVel = 300d; // TODO: MAXUNIVERSALVEL
 
 	protected double rotation = 0; // degrees
@@ -52,7 +53,7 @@ public class Player extends GameObject {
 	}
 
 	private void shoot() {
-		gameObjects.add(new Laser(this.getCentreX(), this.getCentreY(), 50, 3, 9, gc, this, (int) this.getRotation(), 5, "#0F0"));
+		gameObjects.add(new Laser(this.getCentreX(), this.getCentreY(), 50, 3, 9, gc, this, (int) this.getRotation(), 1, "#0F0"));
 	}
 
 	@Override
@@ -111,10 +112,10 @@ public class Player extends GameObject {
 
 			// if the magnitude of the velocity (given by sqrt of the sum of x and y components squared) < max speed, increase both components
 			if (Math.abs(this.dx) < Math.abs(this.maxThrustComponentVel)) { // TODO: Max speed = 100
-				this.dx += (-1*Math.cos(Math.toRadians(this.rotation))); // TODO: |Acceleration| = 2, horizontal velocity multiplier
+				this.dx += (-0.7*Math.cos(Math.toRadians(this.rotation))); // TODO: |Acceleration| = 2, horizontal velocity multiplier
 			}
 			if (Math.abs(this.dy) < Math.abs(this.maxThrustComponentVel)) {
-				this.dy += (-1*Math.sin(Math.toRadians(this.rotation)));
+				this.dy += (-0.7*Math.sin(Math.toRadians(this.rotation)));
 			}
 
 			if (this.thrusterLength < 50) {
@@ -127,7 +128,7 @@ public class Player extends GameObject {
 
 		// impart gravitational acceleration by all other GameObjects on player (this way, only the player is affected, and they don't affect each other)
 		for (GameObject object: gameObjects) {
-			if (!(object instanceof Player || object instanceof Background)) {
+			if (!(object instanceof Player || object instanceof Background || object instanceof Laser)) {
 				// if outside circle
 
 					// change each component by the acceleration constant multiplied by the displacement in that component's axis
@@ -151,14 +152,14 @@ public class Player extends GameObject {
 		// try and get the x and y velocity components equal to 0 if not already
 		// the min velocity value must be LESS than the min velocity that can be gained otherwise player will never move!
 		if (this.dx != 0d) {
-			this.dx -= (Math.signum(this.dx)*0.1); // TODO: |deceleration| = 0.01
+			this.dx -= (Math.signum(this.dx)*0.2); // TODO: |deceleration| = 0.01
 
 			if (Math.abs(this.dx) < 0.1) {
 				this.dx = 0; // to prevent jittering
 			}
 		}
 		if (this.dy != 0d) {
-			this.dy -= (Math.signum(this.dy)*0.1);
+			this.dy -= (Math.signum(this.dy)*0.2);
 
 			if (Math.abs(this.dy) < 0.1) {
 				this.dy = 0; // to prevent jittering
