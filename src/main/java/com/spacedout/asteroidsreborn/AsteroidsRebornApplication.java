@@ -60,7 +60,7 @@ public class  AsteroidsRebornApplication extends Application {
 
 		// the bounce is much bigger with this planet because the diameter is half the other planet, but with the same mass, so the player accelerates more and hits harder
 //		gameObjects.add(new Planet(-1090, -1090, 500, 9, "file:purple-planet.png", gc, 500000));
-		gameObjects.add(new Planet(-1000, -1000, 9, "file:purple-planet.png", gc, 700000));
+		gameObjects.add(new Planet(-2000, -2000, 9, "file:purple-planet.png", gc, 700000));
 
 
 		if (debugging) {
