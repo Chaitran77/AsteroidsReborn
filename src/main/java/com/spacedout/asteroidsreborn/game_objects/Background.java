@@ -11,8 +11,8 @@ public class Background extends GameObject {
 	protected Player player;
 	protected backgroundStar[] stars;
 
-	public Background(int x, int y, int width, int height, GraphicsContext gc, Player player, int numberOfStars, int mass) {
-		super(x, y, width, height, 0, gc, mass,false);
+	public Background(int x, int y, int width, int height, GraphicsContext gc, Player player, int numberOfStars) {
+		super(x, y, width, height, 0, gc, 0,false);
 		this.player = player;
 
 		Canvas canvas = gc.getCanvas();
@@ -23,7 +23,7 @@ public class Background extends GameObject {
 
 		for (int i = 0; i < numberOfStars; i++) {
 
-			int depthFromPlayer = AsteroidsRebornApplication.generateBiasedRandom(0.65, 1, 10);
+			int depthFromPlayer = AsteroidsRebornApplication.generateBiasedRandom(0.65, 1, 5);
 
 			this.stars[i] = new backgroundStar(
 					random.nextInt((int) canvas.getWidth()),
