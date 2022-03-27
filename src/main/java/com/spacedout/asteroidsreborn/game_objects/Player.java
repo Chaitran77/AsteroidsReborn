@@ -16,7 +16,7 @@ public class Player extends GameObject {
 	protected double dx = 0;
 	protected double dy = 0;
 
-	protected double maxThrustComponentVel = 50d; // for thrust from the mouse
+	protected double maxThrustComponentVel = 80d; // for thrust from the mouse
 	protected double maxUniversalVel = 300d; // TODO: MAXUNIVERSALVEL
 
 	protected double rotation = 0; // degrees
@@ -111,10 +111,10 @@ public class Player extends GameObject {
 
 			// if the magnitude of the velocity (given by sqrt of the sum of x and y components squared) < max speed, increase both components
 			if (Math.abs(this.dx) < Math.abs(this.maxThrustComponentVel)) { // TODO: Max speed = 100
-				this.dx += (-0.4*Math.cos(Math.toRadians(this.rotation))); // TODO: |Acceleration| = 2, horizontal velocity multiplier
+				this.dx += (-1*Math.cos(Math.toRadians(this.rotation))); // TODO: |Acceleration| = 2, horizontal velocity multiplier
 			}
 			if (Math.abs(this.dy) < Math.abs(this.maxThrustComponentVel)) {
-				this.dy += (-0.4*Math.sin(Math.toRadians(this.rotation)));
+				this.dy += (-1*Math.sin(Math.toRadians(this.rotation)));
 			}
 
 			if (this.thrusterLength < 50) {
