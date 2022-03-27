@@ -1,5 +1,6 @@
 package com.spacedout.asteroidsreborn;
 
+import com.google.gson.stream.JsonReader;
 import com.spacedout.asteroidsreborn.game_objects.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -12,10 +13,15 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.google.gson.*;
 // this is where all the backend stuff happens (where we control and store our game objects - asteroids, spaceships etc...)
 
 public class  AsteroidsRebornApplication extends Application {
@@ -25,42 +31,33 @@ public class  AsteroidsRebornApplication extends Application {
 	public static ArrayList<GameObject> gameObjects;
 	public static Scene scene;
 
-	public static double gravitationalConstant = 0.050;
+	public static double gravitationalConstant = 0.030;
 
 	public static Player player;
 
 	private static DebugWindow debuggingWindow;
 
+
 	@Override
 	public void start(Stage stage) throws IOException {
 
-
 		Rectangle2D screenDimensions = Screen.getPrimary().getVisualBounds();
-
 		FXMLLoader fxmlLoader = new FXMLLoader(AsteroidsRebornApplication.class.getResource("game-window.fxml"));
+
 		scene = new Scene(fxmlLoader.load(), 1920, 1080);
 
 		Canvas canvas = (Canvas) scene.lookup("#gameCanvas"); // probs should be global as they will still exist for the same amt of time if global or kept here...
-
 		canvas.setWidth(1920);
-//		canvas.setWidth(screenDimensions.getWidth()/2);
 		canvas.setHeight(1080);
-//		canvas.setHeight(screenDimensions.getHeight()/2);
-
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 
 		gameObjects = new ArrayList<>();// doesn't need to be global as not used outside here
 
 		player = new Player(0, 0, 60, 60, "file:spaceship.png", gc, 10);
-
-		// background has no mass
-		gameObjects.add(new Background(0, 0, 0, 0, gc, player, 70, 0));
+		gameObjects.add(new Background(0, 0, 0, 0, gc, player, 70));
 		gameObjects.add(player);
-		gameObjects.add(new Planet(1000, 1000,  9, "file:purple-planet.png", gc, 500000));
-
-		// the bounce is much bigger with this planet because the diameter is half the other planet, but with the same mass, so the player accelerates more and hits harder
-//		gameObjects.add(new Planet(-1090, -1090, 500, 9, "file:purple-planet.png", gc, 500000));
-		gameObjects.add(new Planet(-2000, -2000, 9, "file:purple-planet.png", gc, 700000));
+		gameObjects.add(new Planet(2000, 2000,  9, "file:purple-planet.png", gc, 500000));
+		gameObjects.add(new Planet(-1000, -1000, 9, "file:purple-planet.png", gc, 700000));
 
 
 		if (debugging) {
@@ -74,6 +71,8 @@ public class  AsteroidsRebornApplication extends Application {
 			object.setX((int) (object.getX() + canvas.getWidth()/2));
 			object.setY((int) (object.getY() + canvas.getHeight()/2));
 		}
+
+		int currentStage = 0;
 
 		Mouse.startListening(canvas);
 
@@ -115,6 +114,26 @@ public class  AsteroidsRebornApplication extends Application {
 		stage.setScene(scene);
 		stage.show();
 	}
+
+	private static void generateStage(int stageIndex) {
+		Gson gson = new Gson();
+		try {
+			File stagesFile = new File(AsteroidsRebornApplication.class.getResource("stages.json").toURI());
+			JSONSchemaClasses.Stage[] stages = gson.fromJson(new FileReader(stagesFile), JSONSchemaClasses.Stage[].class);
+
+			JSONSchemaClasses.Stage stageData = stages[stageIndex];
+
+//			for (:
+//			     stageData.) {
+//
+//			}
+
+		} catch (URISyntaxException | FileNotFoundException e) {
+			System.out.println(e.getMessage());
+			System.out.println("Couldn't load stages file :(");
+		}
+	}
+
 
 	public static int generateBiasedRandom(double bias, int lowerBound, int upperBound) {
 		Random random = new Random();
