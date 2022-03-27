@@ -3,6 +3,7 @@ package com.spacedout.asteroidsreborn;
 import com.spacedout.asteroidsreborn.game_objects.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -31,8 +32,15 @@ public class  AsteroidsRebornApplication extends Application {
 
 	private static DebugWindow debuggingWindow;
 
-	@Override
-	public void start(Stage stage) throws IOException {
+	public static boolean buttonPressed = false;
+
+	public boolean buttonPress (ActionEvent start) {
+		buttonPressed = true;
+		return true;
+	}
+
+
+	public void start(Stage stage, ActionEvent start) throws IOException {
 
 
 		Rectangle2D screenDimensions = Screen.getPrimary().getVisualBounds();
@@ -40,80 +48,91 @@ public class  AsteroidsRebornApplication extends Application {
 		FXMLLoader fxmlLoader = new FXMLLoader(AsteroidsRebornApplication.class.getResource("game-window.fxml"));
 		scene = new Scene(fxmlLoader.load(), 1920, 1080);
 
-		Canvas canvas = (Canvas) scene.lookup("#gameCanvas"); // probs should be global as they will still exist for the same amt of time if global or kept here...
+		boolean loop = true;
+		boolean startGame = buttonPress(start);
+		while (loop = true) {
+			if (startGame = true) {
+				loop = false;
+				Canvas canvas = (Canvas) scene.lookup("#gameCanvas"); // probably should be global as they will still exist for the same amt of time if global or kept here...
 
-		canvas.setWidth(1920);
+				canvas.setWidth(1920);
 //		canvas.setWidth(screenDimensions.getWidth()/2);
-		canvas.setHeight(1080);
+				canvas.setHeight(1080);
 //		canvas.setHeight(screenDimensions.getHeight()/2);
 
-		GraphicsContext gc = canvas.getGraphicsContext2D();
+				GraphicsContext gc = canvas.getGraphicsContext2D();
 
-		gameObjects = new ArrayList<>();// doesn't need to be global as not used outside here
+				gameObjects = new ArrayList<>();// doesn't need to be global as not used outside here
 
-		player = new Player(0, 0, 60, 60, "file:spaceship.png", gc, 10);
+				player = new Player(0, 0, 60, 60, "file:spaceship.png", gc, 10);
 
-		// background has no mass
-		gameObjects.add(new Background(0, 0, 0, 0, gc, player, 70, 0));
-		gameObjects.add(player);
-		gameObjects.add(new Planet(1000, 1000,  9, "file:purple-planet.png", gc, 500000));
+				// background has no mass
+				gameObjects.add(new Background(0, 0, 0, 0, gc, player, 70, 0));
+				gameObjects.add(player);
+				gameObjects.add(new Planet(1000, 1000, 9, "file:purple-planet.png", gc, 500000));
 
-		// the bounce is much bigger with this planet because the diameter is half the other planet, but with the same mass, so the player accelerates more and hits harder
+				// the bounce is much bigger with this planet because the diameter is half the other planet, but with the same mass, so the player accelerates more and hits harder
 //		gameObjects.add(new Planet(-1090, -1090, 500, 9, "file:purple-planet.png", gc, 500000));
-		gameObjects.add(new Planet(-2000, -2000, 9, "file:purple-planet.png", gc, 700000));
+				gameObjects.add(new Planet(-2000, -2000, 9, "file:purple-planet.png", gc, 700000));
 
-
-		if (debugging) {
-			// all the GameObjects now present in the gameObjects ArrayList will be debugged
-			debuggingWindow = new DebugWindow(gameObjects.toArray(new GameObject[0]));
-		}
-		LocationBalloon locationBalloon = new LocationBalloon(gc);
-
-		// correct positions of all GameObjects
-		for (GameObject object: gameObjects) {
-			object.setX((int) (object.getX() + canvas.getWidth()/2));
-			object.setY((int) (object.getY() + canvas.getHeight()/2));
-		}
-
-		Mouse.startListening(canvas);
-
-		new AnimationTimer() {
-
-			@Override
-			public void handle(long l) {
-				gc.setFill(Paint.valueOf("#000"));
-				gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
-				for (GameObject object: gameObjects) {
-					object.draw();
-					object.update();
-
-					if (object.requiresLocationBalloon()) {
-						locationBalloon.draw(object, player);
-					}
-
-				}
 
 				if (debugging) {
-					debuggingWindow.updateData();
-
-					// draw debug graphics
-					gc.setStroke(Paint.valueOf("#FFF"));
-
-					gc.moveTo(player.getCentreX(), player.getCentreY());
-					gc.lineTo(player.getCentreX()-(player.getDx()), player.getCentreY());
-					gc.stroke();
-
-					gc.moveTo(player.getCentreX(), player.getCentreY());
-					gc.lineTo(player.getCentreX(), player.getCentreY()-(player.getDy()));
-					gc.stroke();
+					// all the GameObjects now present in the gameObjects ArrayList will be debugged
+					debuggingWindow = new DebugWindow(gameObjects.toArray(new GameObject[0]));
 				}
-			}
-		}.start();
+				LocationBalloon locationBalloon = new LocationBalloon(gc);
 
-		stage.setTitle("Asteroids Reborn");
-		stage.setScene(scene);
-		stage.show();
+				// correct positions of all GameObjects
+				for (GameObject object : gameObjects) {
+					object.setX((int) (object.getX() + canvas.getWidth() / 2));
+					object.setY((int) (object.getY() + canvas.getHeight() / 2));
+				}
+
+				Mouse.startListening(canvas);
+
+				new AnimationTimer() {
+
+					@Override
+					public void handle(long l) {
+						gc.setFill(Paint.valueOf("#000"));
+						gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
+						for (GameObject object : gameObjects) {
+							object.draw();
+							object.update();
+
+							if (object.requiresLocationBalloon()) {
+								locationBalloon.draw(object, player);
+							}
+
+						}
+
+						if (debugging) {
+							debuggingWindow.updateData();
+
+							// draw debug graphics
+							gc.setStroke(Paint.valueOf("#FFF"));
+
+							gc.moveTo(player.getCentreX(), player.getCentreY());
+							gc.lineTo(player.getCentreX() - (player.getDx()), player.getCentreY());
+							gc.stroke();
+
+							gc.moveTo(player.getCentreX(), player.getCentreY());
+							gc.lineTo(player.getCentreX(), player.getCentreY() - (player.getDy()));
+							gc.stroke();
+						}
+					}
+				}.start();
+
+				stage.setTitle("Asteroids Reborn");
+				stage.setScene(scene);
+				stage.show();
+			} else {
+				startGame = buttonPress(start);
+			}
+		}
+
+
 	}
 
 	public static int generateBiasedRandom(double bias, int lowerBound, int upperBound) {
@@ -135,4 +154,9 @@ public class  AsteroidsRebornApplication extends Application {
 	}
 
 	public static void main(String[] args) { launch(); }
+
+	@Override
+	public void start(Stage stage) throws Exception {
+
+	}
 }
