@@ -11,7 +11,7 @@
     </padding>
    <children>
       <Canvas fx:id="gameCanvas" />
-      <Button fx:id="btn_srt" mnemonicParsing="false" onAction="#startGame" text="Start Game" />
+      <Button fx:id="btn_srt" mnemonicParsing="false" text="Start Game" />
    </children>
 
     
