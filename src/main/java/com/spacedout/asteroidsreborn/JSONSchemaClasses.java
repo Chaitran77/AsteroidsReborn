@@ -3,6 +3,10 @@ package com.spacedout.asteroidsreborn;
 import java.util.ArrayList;
 
 public class JSONSchemaClasses {
+
+	// used https://freecodegenerators.com/code-converters/json-to-pojo to create the following
+	// will access only Root via JSONSchemaClasses.Root
+
 	public class Asteroid{
 		public int x;
 		public int y;
