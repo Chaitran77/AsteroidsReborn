@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="AsteroidsReborn" target="17" />
+      <module name="AsteroidsReborn" target="16" />
     </bytecodeTargetLevel>
   </component>
 </project>

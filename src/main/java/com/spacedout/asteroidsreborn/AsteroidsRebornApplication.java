@@ -139,9 +139,9 @@ public class  AsteroidsRebornApplication extends Application {
 		Random random = new Random();
 		double biasNum = random.nextDouble();
 		if (biasNum < bias) {
-			return random.nextInt(lowerBound, upperBound/2);
+			return random.nextInt(upperBound/2) - lowerBound;
 		} else {
-			return random.nextInt(upperBound/2, upperBound);
+			return random.nextInt(upperBound) - upperBound/2;
 		}
 	}
 
